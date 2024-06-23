@@ -117,3 +117,18 @@ def filter_by_zipcode(request,zipcode):
     food_trucks = FoodTruck.objects.filter(zip_codes=zipcode)
     serializer = FoodTruckSerializer(food_trucks, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def detailed_search(request,latitude,longitude,food_type):
+    latitude = float(latitude)
+    longitude = float(longitude)
+    # Filter by food_items containing the specified food_type
+    filtered_trucks = FoodTruck.objects.filter(food_items__icontains=food_type)
+
+    # Annotate queryset with distance calculation
+    nearby_trucks = filtered_trucks.annotate(
+        distance=Sqrt(Power(F('latitude') - latitude, 2) + Power(F('longitude') - longitude, 2))
+    ).order_by('distance')[:5]
+    serializer = FoodTruckSerializer(nearby_trucks, many=True)
+    return Response(serializer.data)
