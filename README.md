@@ -5,7 +5,7 @@ RAKT_assignment
 
 - User Registration and Login
 - User Authentication with JWT
-- Dashboard for managing food truck operations
+- Dashboard for finding food trucks 
 - RESTful API for frontend interaction
 - CSRF protection
 - Error handling and validation
