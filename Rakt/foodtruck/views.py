@@ -76,13 +76,37 @@ def bulk_upload(request):
 
 
 @api_view(['GET'])
-def nearby_foodtrucks(request,latitude=None,longitude=None):
+def nearby_foodtrucks(request, latitude=None, longitude=None):
+    """
+    This function retrieves the 5 nearest food trucks to a given latitude and longitude.
+
+    Parameters:
+    request (Request): The incoming request object.
+    latitude (float): The latitude of the location.
+    longitude (float): The longitude of the location.
+
+    Returns:
+    Response: A JSON response containing the details of the 5 nearest food trucks.
+    """
+
+    # Convert latitude and longitude to float
     latitude = float(latitude)
     longitude = float(longitude)
+
+    # Annotate each food truck with its distance from the given location
+    # Use the Pythagorean theorem to calculate the distance
     nearby_trucks = FoodTruck.objects.annotate(
         distance=Sqrt(Power(F('latitude') - latitude, 2) + Power(F('longitude') - longitude, 2))
-    ).order_by('distance')[:5]
-    print(nearby_trucks)
-    print(type(nearby_trucks))
+    ).order_by('distance')[:5]  # Order by distance and limit to 5 food trucks
+
+    # Serialize the nearby food trucks into JSON format
     serializer = FoodTruckSerializer(nearby_trucks, many=True)
+
+    # Return the serialized data as a JSON response
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def filter_by_food_type(request,food_type):
+    food_trucks = FoodTruck.objects.filter(food_items__icontains=food_type)
+    serializer = FoodTruckSerializer(food_trucks, many=True)
     return Response(serializer.data)
