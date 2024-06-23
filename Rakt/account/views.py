@@ -16,10 +16,12 @@ from rest_framework.decorators import authentication_classes, permission_classes
 class UserRegistrationView(APIView):
   @csrf_exempt
   def post(self, request, format=None):
-    print(request.data)
+    """
+    Handles POST requests for user registration.
+    """
     serializer = UserRegistrationSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-    user = serializer.save()
+    serializer.save()
     return Response({ 'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
     
       
@@ -29,6 +31,9 @@ class UserRegistrationView(APIView):
 @permission_classes([])  
 class UserLoginView(APIView):
   def post(self, request, format=None):
+    """
+    Handles POST requests for user login with credential(username/email/mobile).
+    """
     serializer = UserLoginSerializer(data=request.data)
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

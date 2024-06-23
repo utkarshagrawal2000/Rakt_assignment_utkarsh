@@ -7,6 +7,7 @@ User = get_user_model()
 
 
 class EmailPhoneUsernameAuthenticationBackend(object):
+    """Change the Backend authentication so it can authenticate with username/email/mobile"""
     def authenticate(self, request, username=None, password=None):
         try:
             user = User.objects.get(
