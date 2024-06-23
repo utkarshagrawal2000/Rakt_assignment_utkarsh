@@ -110,3 +110,10 @@ def filter_by_food_type(request,food_type):
     food_trucks = FoodTruck.objects.filter(food_items__icontains=food_type)
     serializer = FoodTruckSerializer(food_trucks, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def filter_by_zipcode(request,zipcode):
+    print(zipcode)
+    food_trucks = FoodTruck.objects.filter(zip_codes=zipcode)
+    serializer = FoodTruckSerializer(food_trucks, many=True)
+    return Response(serializer.data)
