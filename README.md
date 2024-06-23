@@ -79,6 +79,7 @@ To login the user with parameters(credential(email/username/mobile) and password
 [http://127.0.0.1:8000/api/user/login/](http://127.0.0.1:8000/api/user/login/)
 
 *All the api needs to send access token 
+<br>
 To retrieves the 5 nearest food trucks to a given latitude and longitude :
 <br>
 [http://127.0.0.1:8000/foodtruck/nearby_foodtrucks/37.76008693/-122.4188065/](http://127.0.0.1:8000/foodtruck/nearby_foodtrucks/37.76008693/-122.4188065/)
