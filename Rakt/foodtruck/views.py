@@ -9,6 +9,10 @@ import csv
 from .serializers import FileUploadSerializer,FoodTruckSerializer
 from django.db.models import  F
 from django.db.models.functions import Power, Sqrt
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser])
@@ -93,6 +97,9 @@ def nearby_foodtrucks(request, latitude=None, longitude=None):
     latitude = float(latitude)
     longitude = float(longitude)
 
+    # Log the latitude
+    logger.info(latitude)
+
     # Annotate each food truck with its distance from the given location
     # Use the Pythagorean theorem to calculate the distance
     nearby_trucks = FoodTruck.objects.annotate(
@@ -132,3 +139,11 @@ def detailed_search(request,latitude,longitude,food_type):
     ).order_by('distance')[:5]
     serializer = FoodTruckSerializer(nearby_trucks, many=True)
     return Response(serializer.data)
+
+
+def home(request):
+    return render(request, 'foodtruck/login.html')
+
+def dashboard(request):
+
+    return render(request, 'foodtruck/map.html')

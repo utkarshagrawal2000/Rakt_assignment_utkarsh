@@ -1,0 +1,95 @@
+<!-- trucks/templates/trucks/map.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Food Truck Finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      #map {
+        height: 600px;
+        width: 100%;
+      }
+      #details {
+        margin-top: 20px;
+      }
+      .filters {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Food Truck Finder</h1>
+
+    <div class="filters">
+      <h2>Filters</h2>
+      <form id="filter-form">
+        <label for="food-type">Food Type:</label>
+        <input type="text" id="food-type" name="food_type" />
+        <label for="zipcode">Zip Code:</label>
+        <input type="text" id="zipcode" name="zipcode" />
+        <button type="button" onclick="filterFoodTrucks()">Filter</button>
+      </form>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="details">
+      <h2>Food Truck Details</h2>
+      <ul id="details-list"></ul>
+    </div>
+
+    {% comment %}
+    <h2>Bulk Upload</h2>
+    <form id="upload-form" enctype="multipart/form-data">
+      <input type="file" id="csv-file" name="file" />
+      <button type="button" onclick="bulkUpload()">Upload</button>
+    </form>
+    {% endcomment %}
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      let map = L.map("map").setView([37.7749, -122.4194], 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+      }).addTo(map);
+
+      let authToken = null;
+
+      function filterFoodTrucks() {
+        const foodType = document.getElementById("food-type").value;
+        const zipcode = document.getElementById("zipcode").value;
+
+        let url = `/api/detailed_search/?latitude=37.7749&longitude=-122.4194&food_type=${foodType}`;
+        if (zipcode) {
+          url += `&zipcode=${zipcode}`;
+        }
+
+        fetch(url, {
+          method: "GET",
+          headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Filtered food trucks:", data);
+            displayFoodTrucksOnMap(data);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function displayFoodTrucksOnMap(trucks) {
+        trucks.forEach((truck) => {
+          const marker = L.marker([truck.latitude, truck.longitude]).addTo(map);
+          marker
+            .bindPopup(`<b>${truck.applicant}</b><br>${truck.food_items}`)
+            .openPopup();
+
+          const listItem = document.createElement("li");
+          listItem.textContent = `${truck.applicant}: ${truck.food_items}`;
+          document.getElementById("details-list").appendChild(listItem);
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <title>Food Truck Finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      #map {
+        height: 24rem;
+        width: 100%;
+      }
+      #details {
+        margin-top: 20px;
+      }
+      .filters {
+        margin-bottom: 20px;
+      }
+      .filter-inputs {
+        display: none;
+        margin-top: 10px;
+      }
+      .logout-container {
+        position: fixed;  /* Fix the container to the screen */
+        right: 10px;       /* Position it 10px from the right edge */
+        top: 7%;          /* Center it vertically */
+        transform: translateY(-50%);  /* Adjust vertical position */
+        z-index: 100;      /* Ensure button is above other elements */
+      }
+      
+      .logout-btn {
+        /* Style the button as desired (color, padding, etc.) */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logout-container">
+      <a class="logout-btn" href="{% url 'home' %}">Logout</a>
+    </div>
+  </ul>
+    <div class="nav">
+      <h1>Food Truck Finder</h1>
+      
+    </div
+
+    <div class="filters">
+      <h2>Filters</h2>
+      <button onclick="toggleFilter('nearby_food_truck')">
+        Show Nearby Food Trucks
+      </button>
+      <button onclick="toggleFilter('food-type')">Filter by Food Type</button>
+      <button onclick="toggleFilter('zipcode')">Filter by Zip Code</button>
+      <button onclick="toggleFilter('nearby_food_truck_with_foodtype')">
+        Nearby Food Trucks with Food Type
+      </button>
+
+      <div id="nearby_food_truck-filter" class="filter-inputs">
+        <label for="food-type">Nearbuy Food Truck:</label>
+        <input
+          type="text"
+          placeholder="latitude"
+          id="latitude"
+          name="latitude"
+        />
+        <input
+          type="text"
+          placeholder="longitude"
+          id="longitude"
+          name="longitude"
+        />
+        <button type="button" onclick="filterBynearbyFoodTruck()">
+          Filter
+        </button>
+      </div>
+      <div id="food-type-filter" class="filter-inputs">
+        <label for="food-type">Food Type:</label>
+        <input type="text" id="food-type" name="food_type" />
+        <button type="button" onclick="filterByFoodType()">Filter</button>
+      </div>
+
+      <div id="zipcode-filter" class="filter-inputs">
+        <label for="zipcode">Zip Code:</label>
+        <input type="text" id="zipcode" name="zipcode" />
+        <button type="button" onclick="filterByZipcode()">Filter</button>
+      </div>
+    </div>
+
+    <div id="nearby_food_truck_with_foodtype-filter" class="filter-inputs">
+      <label for="food-type">Nearbuy Food Truck with foodType:</label>
+      <input
+        type="text"
+        placeholder="latitude"
+        id="latitude1"
+        name="latitude"
+      />
+      <input
+        type="text"
+        placeholder="longitude"
+        id="longitude1"
+        name="longitude"
+      />
+      <input type="text" id="food-type1" name="food_type" />
+      <button type="button" onclick="nearby_food_truck_with_foodtype()">
+        Filter
+      </button>
+    </div>
+
+    <div id="map"></div>
+
+    {% comment %}
+    <div id="details">
+      <h2>Food Truck Details</h2>
+      <ul id="details-list"></ul>
+    </div>
+    {% endcomment %}
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      let map = L.map("map").setView([37.7749, -122.4194], 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+      }).addTo(map);
+
+      let authToken = null;
+
+      function toggleFilter(filterType) {
+        document.querySelectorAll(".filter-inputs").forEach((div) => {
+          div.style.display = "none";
+        });
+        document.getElementById(`${filterType}-filter`).style.display = "block";
+      }
+
+      function filterBynearbyFoodTruck() {
+        const latitude = document.getElementById("latitude").value;
+        const longitude = document.getElementById("longitude").value;
+        const authToken = localStorage.getItem("access_token");
+        fetch(
+          `http://127.0.0.1:8000/foodtruck/nearby_foodtrucks/${latitude}/${longitude}`,
+          {
+            method: "GET",
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Filtered nearby:", data);
+            displayFoodTrucksOnMap(data);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function filterByFoodType() {
+        const foodType = document.getElementById("food-type").value;
+        const authToken = localStorage.getItem("access_token");
+        fetch(
+          `http://127.0.0.1:8000/foodtruck/filter_by_food_type/${foodType}`,
+          {
+            method: "GET",
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Filtered food trucks by type:", data);
+            displayFoodTrucksOnMap(data);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function filterByZipcode() {
+        const zipcode = document.getElementById("zipcode").value;
+        const authToken = localStorage.getItem("access_token");
+        fetch(
+          `http://127.0.0.1:8000/foodtruck/filter_by_zipcode/${zipcode}`,
+          {
+            method: "GET",
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Filtered food trucks by zip code:", data);
+            displayFoodTrucksOnMap(data);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function nearby_food_truck_with_foodtype() {
+        const latitude = document.getElementById("latitude1").value;
+        const longitude = document.getElementById("longitude1").value;
+        const foodType = document.getElementById("food-type1").value;
+        const authToken = localStorage.getItem("access_token");
+        fetch(
+          `http://127.0.0.1:8000/foodtruck/detailed_search/${latitude}/${longitude}/${foodType}`,
+          {
+            method: "GET",
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Filtered food trucks by zip code:", data);
+            displayFoodTrucksOnMap(data);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function displayFoodTrucksOnMap(trucks) {
+        map.eachLayer((layer) => {
+          if (!!layer.toGeoJSON) {
+            map.removeLayer(layer);
+          }
+        });
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+        }).addTo(map);
+
+        {% comment %} document.getElementById("details-list").innerHTML = ""; {% endcomment %}
+
+        trucks.forEach((truck) => {
+          const marker = L.marker([truck.latitude, truck.longitude]).addTo(map);
+          marker
+            .bindPopup(`<b>${truck.applicant}</b><br>${truck.food_items}`)
+            .openPopup();
+
+          {% comment %} const listItem = document.createElement("li");
+          listItem.textContent = `${truck.applicant}: ${truck.food_items}`;
+          document.getElementById("details-list").appendChild(listItem); {% endcomment %}
+        });
+      }
+
+
+      
+    </script>
+    <script>
+      document.getElementById('logout-btn').addEventListener('click', function() {
+        localStorage.removeItem('access_token'); // Remove access token
+        window.location.href = "{% url 'home' %}"; // Redirect to login page
+      });
+      </script>
+  </body>
+</html>

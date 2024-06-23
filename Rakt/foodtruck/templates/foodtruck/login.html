@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login and Register</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'foodtruck/css/login.css' %}">
+    <script src="{% static 'foodtruck/js/script.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // Login Form Submission
+            $("#login-form").submit(function (event) {
+                event.preventDefault();
+
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var csrftoken = $('[name="csrfmiddlewaretoken"]').val(); // Get CSRF token from form
+
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/user/login/",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        credential: username,
+                        password: password,
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function (response) {
+                        if (response.msg === "Login Success") {
+                            console.log(response.token.access);
+                            localStorage.setItem("access_token", response.token.access); // Assuming 'access' key in response
+                            window.location.href = "/foodtruck/dashboard/"; // Redirect to success page
+                        } else {
+                            $("#non-field-errors").text(response.non_field_errors); // Display non-field errors
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", xhr, status, error); // Log errors in development
+                        // Handle unexpected errors gracefully (e.g., display generic error message)
+                    },
+                });
+            });
+
+            // Registration Form Submission
+            $(".form-signup").submit(function (event) {
+                event.preventDefault();
+
+                var username = $("#signup-username").val();
+                var email = $("#signup-email").val();
+                var mobile = $("#signup-mobile").val();
+                var password = $("#signup-password").val();
+                var password2 = $("#signup-password-confirm").val();
+                var tc = 1; // Terms and conditions, always set to 1
+                var csrftoken = $('[name="csrfmiddlewaretoken"]').val(); // Get CSRF token from form
+
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/user/register/",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        email: email,
+                        username: username,
+                        mobile: mobile,
+                        password: password,
+                        password2: password2,
+                        tc: tc
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function (response) {
+                        if (response.msg === "Registration Successful") {
+                            window.location.href = ""; // Redirect to login page after successful registration
+                        } else {
+                            displayErrors(response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", xhr, status, error); // Log errors in development
+                        // Handle unexpected errors gracefully (e.g., display generic error message)
+                    },
+                });
+            });
+
+            function displayErrors(response) {
+                $("#signup-username-error").text(response.username ? response.username[0] : "");
+                $("#signup-email-error").text(response.email ? response.email[0] : "");
+                $("#signup-mobile-error").text(response.mobile ? response.mobile[0] : "");
+            }
+        });
+    </script>
+    <style>
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <section class="forms-section">
+        <h1 class="section-title">Food Truck</h1>
+        <div class="forms">
+            <div class="form-wrapper is-active">
+                <button type="button" class="switcher switcher-login">
+                    Login
+                    <span class="underline"></span>
+                </button>
+                <form id="login-form" class="form form-login" method="post">
+                    <fieldset>
+                        {% csrf_token %}
+                        <div class="input-block">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" required />
+                        </div>
+                        <div class="input-block">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required />
+                        </div>
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+            <div class="form-wrapper">
+                <button type="button" class="switcher switcher-signup">
+                    Sign Up
+                    <span class="underline"></span>
+                </button>
+                <form class="form form-signup">
+                    <fieldset>
+                        {% csrf_token %}
+                        <div class="input-block fix">
+                            <label for="signup-username">Username</label>
+                            <input id="signup-username" type="text" required>
+                            <div id="signup-username-error" class="error-message"></div>
+                        </div>
+                        <div class="input-block fix">
+                            <label for="signup-email">E-mail</label>
+                            <input id="signup-email" type="email" required>
+                            <div id="signup-email-error" class="error-message"></div>
+                        </div>
+                        <div class="input-block fix">
+                            <label for="signup-mobile">Mobile</label>
+                            <input id="signup-mobile" type="text" required>
+                            <div id="signup-mobile-error" class="error-message"></div>
+                        </div>
+                        <div class="input-block fix">
+                            <label for="signup-password">Password</label>
+                            <input id="signup-password" type="password" required>
+                        </div>
+                        <div class="input-block">
+                            <label for="signup-password-confirm">Confirm password</label>
+                            <input id="signup-password-confirm" type="password" required>
+                        </div>
+                    </fieldset>
+                    <button type="submit" class="btn-signup">Continue</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
