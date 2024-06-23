@@ -6,8 +6,9 @@ from rest_framework import status
 from .models import FoodTruck
 from io import StringIO
 import csv
-from .serializers import FileUploadSerializer
-
+from .serializers import FileUploadSerializer,FoodTruckSerializer
+from django.db.models import  F
+from django.db.models.functions import Power, Sqrt
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser])
@@ -72,3 +73,16 @@ def bulk_upload(request):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def nearby_foodtrucks(request,latitude=None,longitude=None):
+    latitude = float(latitude)
+    longitude = float(longitude)
+    nearby_trucks = FoodTruck.objects.annotate(
+        distance=Sqrt(Power(F('latitude') - latitude, 2) + Power(F('longitude') - longitude, 2))
+    ).order_by('distance')[:5]
+    print(nearby_trucks)
+    print(type(nearby_trucks))
+    serializer = FoodTruckSerializer(nearby_trucks, many=True)
+    return Response(serializer.data)
