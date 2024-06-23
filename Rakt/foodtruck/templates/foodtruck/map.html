@@ -5,33 +5,7 @@
     <meta charset="UTF-8" />
     <title>Food Truck Finder</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-      #map {
-        height: 24rem;
-        width: 100%;
-      }
-      #details {
-        margin-top: 20px;
-      }
-      .filters {
-        margin-bottom: 20px;
-      }
-      .filter-inputs {
-        display: none;
-        margin-top: 10px;
-      }
-      .logout-container {
-        position: fixed;  /* Fix the container to the screen */
-        right: 10px;       /* Position it 10px from the right edge */
-        top: 7%;          /* Center it vertically */
-        transform: translateY(-50%);  /* Adjust vertical position */
-        z-index: 100;      /* Ensure button is above other elements */
-      }
-      
-      .logout-btn {
-        /* Style the button as desired (color, padding, etc.) */
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'foodtruck/css/map.css' %}">
   </head>
   <body>
     <div class="logout-container">
