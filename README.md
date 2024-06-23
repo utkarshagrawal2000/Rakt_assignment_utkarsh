@@ -63,10 +63,10 @@ python manage.py runserver
 
 Importing Postman Collection
 
-Open Postman.
-Click on Import in the top left corner.
-Select the postman_collection.json file from your file system.
-The collection will be imported, and you can view and test the API endpoints.
+- Open Postman.
+- Click on Import in the top left corner.
+- Select the postman_collection.json file from your file system.
+- The collection will be imported, and you can view and test the API endpoints.
 
 
 *API details
@@ -104,4 +104,4 @@ If i have more time i would like to do:
 - Add all fiters in single form so user can choose what they want in single go.
 - Show details of truck after the filter results.
 - Design the frontend properly.
-- Optimize the apis. 
+- Optimize the apis more throughly. 
