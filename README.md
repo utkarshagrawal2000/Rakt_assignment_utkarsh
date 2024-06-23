@@ -15,8 +15,9 @@ RAKT_assignment
 Step 1:
 
 * Clone the application to your local machine
- ```bash
-https://github.com/utkarshagrawal2000/Rakt_assignment_utkarsh
+ ```
+clone https://github.com/utkarshagrawal2000/Rakt_assignment_utkarsh
+```
 * Go into Rakt directory in Rakt_assignment_utkarsh folder
 
 Step 2:
@@ -76,6 +77,8 @@ To register the user with parameters(email,username,mobile,password,password2,tc
 To login the user with parameters(credential(email/username/mobile) and password) :
 <br>
 [http://127.0.0.1:8000/api/user/login/](http://127.0.0.1:8000/api/user/login/)
+
+*All the api needs to send access token 
 To retrieves the 5 nearest food trucks to a given latitude and longitude :
 <br>
 [http://127.0.0.1:8000/foodtruck/nearby_foodtrucks/37.76008693/-122.4188065/](http://127.0.0.1:8000/foodtruck/nearby_foodtrucks/37.76008693/-122.4188065/)
