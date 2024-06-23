@@ -114,13 +114,32 @@ def nearby_foodtrucks(request, latitude=None, longitude=None):
 
 @api_view(['GET'])
 def filter_by_food_type(request,food_type):
+    """
+    This function retrieves the  food trucks for given food type.
+
+    Parameters:
+    request (Request): The incoming request object.
+    food_type: The food type
+
+    Returns:
+    Response: A JSON response containing the details food trucks.
+    """
     food_trucks = FoodTruck.objects.filter(food_items__icontains=food_type)
     serializer = FoodTruckSerializer(food_trucks, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def filter_by_zipcode(request,zipcode):
-    print(zipcode)
+    """
+    This function retrieves the  food trucks for given zipcode.
+
+    Parameters:
+    request (Request): The incoming request object.
+    zipcode: The zipcode
+
+    Returns:
+    Response: A JSON response containing the details of the food trucks.
+    """
     food_trucks = FoodTruck.objects.filter(zip_codes=zipcode)
     serializer = FoodTruckSerializer(food_trucks, many=True)
     return Response(serializer.data)
@@ -128,6 +147,19 @@ def filter_by_zipcode(request,zipcode):
 
 @api_view(['GET'])
 def detailed_search(request,latitude,longitude,food_type):
+    """
+    This function retrieves the 5 nearest food trucks to a given latitude and longitude and food type.
+
+    Parameters:
+    request (Request): The incoming request object.
+    latitude (float): The latitude of the location.
+    longitude (float): The longitude of the location.
+    food_type: The food type
+
+    Returns:
+    Response: A JSON response containing the details of the 5 nearest food trucks.
+    """
+
     latitude = float(latitude)
     longitude = float(longitude)
     # Filter by food_items containing the specified food_type
@@ -142,8 +174,9 @@ def detailed_search(request,latitude,longitude,food_type):
 
 
 def home(request):
+    """redirect to home page"""
     return render(request, 'foodtruck/login.html')
 
 def dashboard(request):
-
+    """redirect to dashboard page"""
     return render(request, 'foodtruck/map.html')
