@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "607274f2-a6bc-44f9-9cad-f791eb9b494f",
+		"name": "Rakt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21549966"
+	},
+	"item": [
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "user registeration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "utkarsh@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "utkarsh",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "7976224241",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "password2",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "tc",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user/register/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginwith username/email/mobile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "utkarsh@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "utkarsh",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "7976224241",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "password2",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "tc",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user/register/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Food truck",
+			"item": [
+				{
+					"name": "upload truck data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE5MTMzNTA2LCJpYXQiOjE3MTkxMjk5MDYsImp0aSI6IjNmNWEzOWMxNWJmMTRlMjE4YjUwMjA3MmM0NmVkZWI4IiwidXNlcl9pZCI6MX0.sTUbCJMzlfB8-IgIGcCt5fRamu3s6E4fxQHXK6pN6SU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/utkarsh/Downloads/P1-django-take-home-assignment-main/P1-django-take-home-assignment-main/food-truck-data.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/foodtruck/bulk_upload/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"foodtruck",
+								"bulk_upload",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nearby 5 trucks based on lat/long",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE5MTMzNTA2LCJpYXQiOjE3MTkxMjk5MDYsImp0aSI6IjNmNWEzOWMxNWJmMTRlMjE4YjUwMjA3MmM0NmVkZWI4IiwidXNlcl9pZCI6MX0.sTUbCJMzlfB8-IgIGcCt5fRamu3s6E4fxQHXK6pN6SU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/foodtruck/nearby_foodtrucks/37.76008693/-122.4188065/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"foodtruck",
+								"nearby_foodtrucks",
+								"37.76008693",
+								"-122.4188065",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "trucks based on food type",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE5MTMzNTA2LCJpYXQiOjE3MTkxMjk5MDYsImp0aSI6IjNmNWEzOWMxNWJmMTRlMjE4YjUwMjA3MmM0NmVkZWI4IiwidXNlcl9pZCI6MX0.sTUbCJMzlfB8-IgIGcCt5fRamu3s6E4fxQHXK6pN6SU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/foodtruck/filter_by_food_type/hot/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"foodtruck",
+								"filter_by_food_type",
+								"hot",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "truck based on zipcode",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE5MTM3MjQwLCJpYXQiOjE3MTkxMzM2NDAsImp0aSI6IjI2Zjc0NzVhMTdjOTRmYThiOTY3YzlhMGU5ZjEyYmMxIiwidXNlcl9pZCI6MX0.KrnohLRWgzCNlhaYhkaPUT2qfokpuq6871qEOqJnNnk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/foodtruck/filter_by_zipcode/28859/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"foodtruck",
+								"filter_by_zipcode",
+								"28859",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nearby 5 trucks based on location and food type",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE5MTM3MjQwLCJpYXQiOjE3MTkxMzM2NDAsImp0aSI6IjI2Zjc0NzVhMTdjOTRmYThiOTY3YzlhMGU5ZjEyYmMxIiwidXNlcl9pZCI6MX0.KrnohLRWgzCNlhaYhkaPUT2qfokpuq6871qEOqJnNnk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/foodtruck/detailed_search/37.76008693/-122.4188065/hot/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"foodtruck",
+								"detailed_search",
+								"37.76008693",
+								"-122.4188065",
+								"hot",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
