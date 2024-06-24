@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "607274f2-a6bc-44f9-9cad-f791eb9b494f",
+		"_postman_id": "27f83673-c619-4a82-803c-dc5238f907a4",
 		"name": "Rakt",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "21549966"
+		"_exporter_id": "24525738",
+		"_collection_link": "https://cloudy-zodiac-760971.postman.co/workspace/oms~1f08612b-ef7d-492b-9641-3be5aa9b1ac0/collection/24525738-27f83673-c619-4a82-803c-dc5238f907a4?action=share&source=collection_link&creator=24525738"
 	},
 	"item": [
 		{
@@ -78,18 +79,8 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "email",
+									"key": "credential",
 									"value": "utkarsh@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "username",
-									"value": "utkarsh",
-									"type": "text"
-								},
-								{
-									"key": "mobile",
-									"value": "7976224241",
 									"type": "text"
 								},
 								{
@@ -98,19 +89,33 @@
 									"type": "text"
 								},
 								{
-									"key": "password2",
-									"value": "1234",
-									"type": "text"
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								},
 								{
-									"key": "tc",
-									"value": "1",
-									"type": "text"
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/user/register/",
+							"raw": "http://127.0.0.1:8000/api/user/login/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -122,7 +127,7 @@
 							"path": [
 								"api",
 								"user",
-								"register",
+								"login",
 								""
 							]
 						}
