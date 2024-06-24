@@ -80,6 +80,9 @@ To login the user with parameters(credential(email/username/mobile) and password
 
 *All the api needs to send access token 
 <br>
+To insert the  food trucks data use the api:
+<br>
+[http://127.0.0.1:8000/foodtruck/bulk_upload/](http://127.0.0.1:8000/foodtruck/bulk_upload/)
 To retrieves the 5 nearest food trucks to a given latitude and longitude :
 <br>
 [http://127.0.0.1:8000/foodtruck/nearby_foodtrucks/37.76008693/-122.4188065/](http://127.0.0.1:8000/foodtruck/nearby_foodtrucks/37.76008693/-122.4188065/)
